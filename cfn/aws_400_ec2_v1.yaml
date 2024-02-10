@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'EC2 for IPv6, by Wolfgang Unger ' 
+
+
+Parameters:
+
+  ParentVPCStack:
+    Description: "Stack name of parent VPC stack"
+    Type: String
+    Default: "IPv6VPC"
+
+  OwnerName:
+    Description: An owner name, used in tags
+    Type: String
+    Default: "wolfgang.unger"
+
+  ImageId:
+    Description: Inform the image id
+    Type: String
+    Default: "ami-027d95b1c717e8c5d"
+################## Resources ##############################    
+Resources:
+
+  BastionKeyPair:
+    Type: 'AWS::EC2::KeyPair'
+    Properties:
+      KeyName: BastionKeyPair
+
+  Ec2Instance: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: !Ref ImageId
+      KeyName: !Ref BastionKeyPair 
+      InstanceType: t3.micro     
+      SubnetId:  
+        Fn::ImportValue: !Sub '${ParentVPCStack}-SubnetAPublic'
+
+Outputs:
+
+  BastionServerInstanceId:
+    Value: !Ref BastionServer
+    Description: BastionServerInstanceId
+    Export:
+      Name: BastionServerInstanceId
+
+  KeyPair:
+    Value: !Ref BastionServer
+    Description: BastionKeyPair
+    Export:
+      Name: BastionKeyPair        
