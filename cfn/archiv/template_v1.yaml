@@ -128,6 +128,7 @@ Resources:
   # Public subnet A   
   #
   PublicSubnetA:
+    DependsOn: IPv6CidrBlock
     Type: AWS::EC2::Subnet
     Properties:
       CidrBlock: 10.0.0.0/20
@@ -140,6 +141,11 @@ Resources:
       VpcId: !Ref PublicVpc
       MapPublicIpOnLaunch: true
       AssignIpv6AddressOnCreation: true 
+      EnableDns64: true
+      PrivateDnsNameOptionsOnLaunch:
+        EnableResourceNameDnsAAAARecord: true
+        EnableResourceNameDnsARecord: true
+        HostnameType: resource-name
       Tags:
       - Key: Name
         Value: PublicSubnetA
@@ -153,6 +159,7 @@ Resources:
   # Public subnet B   
   #
   PublicSubnetB:
+    DependsOn: IPv6CidrBlock
     Type: AWS::EC2::Subnet
     Properties:
       CidrBlock: 10.0.16.0/20
@@ -165,6 +172,11 @@ Resources:
       VpcId: !Ref PublicVpc
       MapPublicIpOnLaunch: true
       AssignIpv6AddressOnCreation: true 
+      EnableDns64: true
+      PrivateDnsNameOptionsOnLaunch:
+        EnableResourceNameDnsAAAARecord: true
+        EnableResourceNameDnsARecord: true
+        HostnameType: resource-name      
       Tags:
       - Key: Name
         Value: PublicSubnetB
@@ -178,6 +190,7 @@ Resources:
   # Private subnet A   
   #
   PrivateSubnetA:
+    DependsOn: IPv6CidrBlock
     Type: AWS::EC2::Subnet
     Properties:
       CidrBlock: 10.0.32.0/20
@@ -186,9 +199,14 @@ Resources:
           - "${VpcPart}${SubnetPart}"
           - SubnetPart: '02::/64'
             VpcPart: !Select [ 0, !Split [ '00::/56', !Select [ 0, !GetAtt PublicVpc.Ipv6CidrBlocks ]]]
-      AssignIpv6AddressOnCreation: true
       AvailabilityZone: !Select [ 0, !GetAZs '' ]
       VpcId: !Ref PublicVpc
+      AssignIpv6AddressOnCreation: true 
+      EnableDns64: true
+      PrivateDnsNameOptionsOnLaunch:
+        EnableResourceNameDnsAAAARecord: true
+        EnableResourceNameDnsARecord: true
+        HostnameType: resource-name      
       Tags:
       - Key: Name
         Value: PrivateSubnetA
@@ -207,6 +225,7 @@ Resources:
   # Private subnet B   
   #
   PrivateSubnetB:
+    DependsOn: IPv6CidrBlock
     Type: AWS::EC2::Subnet
     Properties:
       CidrBlock: 10.0.48.0/20
@@ -215,9 +234,14 @@ Resources:
           - "${VpcPart}${SubnetPart}"
           - SubnetPart: '03::/64'
             VpcPart: !Select [ 0, !Split [ '00::/56', !Select [ 0, !GetAtt PublicVpc.Ipv6CidrBlocks ]]]
-      AssignIpv6AddressOnCreation: true
       AvailabilityZone: !Select [ 0, !GetAZs '' ]
       VpcId: !Ref PublicVpc
+      AssignIpv6AddressOnCreation: true 
+      EnableDns64: true
+      PrivateDnsNameOptionsOnLaunch:
+        EnableResourceNameDnsAAAARecord: true
+        EnableResourceNameDnsARecord: true
+        HostnameType: resource-name      
       Tags:
       - Key: Name
         Value: PrivateSubnetB
