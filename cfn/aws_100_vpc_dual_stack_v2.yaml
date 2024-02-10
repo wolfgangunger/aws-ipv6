@@ -116,7 +116,7 @@ Resources:
       EnableDns64: true
       PrivateDnsNameOptionsOnLaunch:
         EnableResourceNameDnsAAAARecord: true
-        EnableResourceNameDnsARecord: false
+        EnableResourceNameDnsARecord: true
         HostnameType: resource-name      
       Tags:
       - Key: Name
@@ -141,7 +141,7 @@ Resources:
       EnableDns64: true
       PrivateDnsNameOptionsOnLaunch:
         EnableResourceNameDnsAAAARecord: true
-        EnableResourceNameDnsARecord: false
+        EnableResourceNameDnsARecord: true
         HostnameType: resource-name                  
       Tags:
       - Key: Name
@@ -166,7 +166,7 @@ Resources:
       EnableDns64: true
       PrivateDnsNameOptionsOnLaunch:
         EnableResourceNameDnsAAAARecord: true
-        EnableResourceNameDnsARecord: false
+        EnableResourceNameDnsARecord: true
         HostnameType: resource-name                  
       Tags:
       - Key: Name
@@ -190,7 +190,7 @@ Resources:
       EnableDns64: true
       PrivateDnsNameOptionsOnLaunch:
         EnableResourceNameDnsAAAARecord: true
-        EnableResourceNameDnsARecord: false
+        EnableResourceNameDnsARecord: true
         HostnameType: resource-name                  
       Tags:
       - Key: Name

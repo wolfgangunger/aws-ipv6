@@ -29,7 +29,7 @@ Resources:
       InstanceTenancy: default
       Tags:
       - Key: Name
-        Value: !Sub 'IPv6 VPC 10.${ClassB}.0.0/16'
+        Value: !Sub 'IPv6 only VPC 10.${ClassB}.0.0/16'
       - Key: Owner
         Value: !Ref OwnerName          
 
@@ -117,7 +117,7 @@ Resources:
       EnableDns64: true
       PrivateDnsNameOptionsOnLaunch:
         EnableResourceNameDnsAAAARecord: true
-        EnableResourceNameDnsARecord: true
+        EnableResourceNameDnsARecord: false
         HostnameType: resource-name      
       Tags:
       - Key: Name
@@ -143,7 +143,7 @@ Resources:
       EnableDns64: true
       PrivateDnsNameOptionsOnLaunch:
         EnableResourceNameDnsAAAARecord: true
-        EnableResourceNameDnsARecord: true
+        EnableResourceNameDnsARecord: false
         HostnameType: resource-name                  
       Tags:
       - Key: Name
@@ -169,7 +169,7 @@ Resources:
       EnableDns64: true
       PrivateDnsNameOptionsOnLaunch:
         EnableResourceNameDnsAAAARecord: true
-        EnableResourceNameDnsARecord: true
+        EnableResourceNameDnsARecord: false
         HostnameType: resource-name                  
       Tags:
       - Key: Name
@@ -194,7 +194,7 @@ Resources:
       EnableDns64: true
       PrivateDnsNameOptionsOnLaunch:
         EnableResourceNameDnsAAAARecord: true
-        EnableResourceNameDnsARecord: true
+        EnableResourceNameDnsARecord: false
         HostnameType: resource-name                  
       Tags:
       - Key: Name
