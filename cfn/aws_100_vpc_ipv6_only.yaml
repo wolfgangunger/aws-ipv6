@@ -232,7 +232,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
       - Key: Name
-        Value: 'RouteTable  Public'
+        Value: 'RouteTable  Public IPv6 only'
       - Key: Owner
         Value: !Ref OwnerName       
 ## public routes
@@ -272,7 +272,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
       - Key: Name
-        Value: 'RouteTable A Private'
+        Value: 'RouteTable A Private IPv6 only'
       - Key: Owner
         Value: !Ref OwnerName
 
@@ -282,7 +282,7 @@ Resources:
         VpcId: !Ref VPC
         Tags:
         - Key: Name
-          Value: 'RouteTable B Private'
+          Value: 'RouteTable B Private IPv6 only'
         - Key: Owner
           Value: !Ref OwnerName  
 
@@ -321,7 +321,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
       - Key: Name
-        Value: 'ACL Public'
+        Value: 'ACL Public IPv6 only'
       - Key: Owner
         Value: !Ref OwnerName
 
@@ -331,7 +331,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
       - Key: Name
-        Value: 'ACL Private'
+        Value: 'ACL Private IPv6 only'
       - Key: Owner
         Value: !Ref OwnerName
 
