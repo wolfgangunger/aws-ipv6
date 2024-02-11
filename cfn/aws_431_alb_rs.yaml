@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "R53 Recordset for Web Server"
+
+Parameters:
+  ParentVPCStack:
+    Description: "the base vpc stack"
+    Type: String
+    Default: IPv6VPC
+
+Resources:
+  ApiServerRecordset:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name: "alb.ipv6.sccbrasil.com"
+      HostedZoneId: !ImportValue "DNS-HostedZoneId"
+      Type: A
+      #TTL: "300"
+      Comment: RecordsSet for Api Server LB
+      AliasTarget:
+        HostedZoneId: !ImportValue "LB-Web-Server-HostedZoneId"
+        DNSName: !ImportValue "LB-Web-Server"

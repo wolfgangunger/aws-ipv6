@@ -26,8 +26,12 @@ Route 53
 AAAA record to webserver works (IPv6 address), works both if webserver is in private or public subnet    
 CNAME to EC2 DNS name does not work (i-0a9e7fdd1043ab966.eu-west-2.compute.internal)  
 
+ALB Dual Stack working
+RS A Alias to ALB working
+
 
 ### ec2 templates
+status, see vpc findings
 
 #### findings
 output for ec2 ipv6 address not ready 

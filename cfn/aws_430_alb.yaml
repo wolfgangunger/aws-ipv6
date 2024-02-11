@@ -1,0 +1,96 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  Loadbalancer for Web Server, just HTTP, no certificate
+
+Parameters:
+  ParentVPCStack:
+    Description: "Stack name of the parent VPC stack"
+    Type: String
+    Default: IPv6VPC
+
+  OwnerName:
+    Description: An owner name, used in tags
+    Type: String
+    Default: "wolfgang.unger"
+
+Resources:
+  SGApiAlb:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access ALB
+      VpcId: 
+         Fn::ImportValue: !Sub '${ParentVPCStack}-VPC'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIpv6: ::/0         
+
+  AlbWebServer:
+    Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
+    Properties:
+      Type: application
+      Name: AlbWebServer
+      Scheme: internet-facing
+      IpAddressType: dualstack
+      SecurityGroups:
+        - !Ref SGApiAlb
+      Subnets:
+        - !ImportValue
+          "Fn::Sub": "${ParentVPCStack}-SubnetAPublic"
+        - !ImportValue
+          "Fn::Sub": "${ParentVPCStack}-SubnetBPublic"
+      Tags:
+        - Key: "Name"
+          Value: "Alb Web-Server"
+        - Key: "Owner"
+          Value: !Ref OwnerName
+
+  HttpListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref DefaultTargetGroup
+      LoadBalancerArn: !Ref AlbWebServer
+      Port: 80
+      Protocol: HTTP
+
+  DefaultTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: TargetGroupAlbApiServer
+      HealthCheckIntervalSeconds: 30
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 10
+      HealthCheckPort: 80
+      HealthCheckPath: "/"
+      HealthyThresholdCount: 3
+      Matcher:
+        HttpCode: "200-399"
+      Port: 80
+      Protocol: HTTP
+      TargetType: instance
+      Targets:
+        - Id: !ImportValue WebServerEc2InstanceInstanceId
+          Port: 80
+      VpcId: 
+        Fn::ImportValue: !Sub '${ParentVPCStack}-VPC'
+
+#############
+Outputs:
+  WebApiServer:
+    Description: "The LB Web Server"
+    Value: !GetAtt AlbWebServer.DNSName
+    Export:
+      Name: "LB-Web-Server"
+
+  AlbApiServerHostedZoneId:
+    Description: "The Hosted Zone ID of the LB"
+    Value: !GetAtt AlbWebServer.CanonicalHostedZoneID
+    Export:
+      Name: "LB-Web-Server-HostedZoneId"

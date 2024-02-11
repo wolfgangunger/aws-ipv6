@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'A dual Stack VPC with IPv6, 2 public and 2 private subnets, by Wolfgang Unger ' 
+Description: 'A dual Stack VPC with IPv6, 2 public and 2 private subnets, by Wolfgang Unger. Name IPv6VPC for further Stacks ' 
 
 
 Parameters:
