@@ -105,7 +105,7 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       AvailabilityZone: !Select [0, !GetAZs '']
-      MapPublicIpOnLaunch: true
+      MapPublicIpOnLaunch: false
       CidrBlock: !Sub '10.${ClassB}.0.0/20'
       Ipv6CidrBlock: 
         Fn::Sub:
@@ -116,7 +116,7 @@ Resources:
       EnableDns64: true
       PrivateDnsNameOptionsOnLaunch:
         EnableResourceNameDnsAAAARecord: true
-        EnableResourceNameDnsARecord: true
+        EnableResourceNameDnsARecord: false
         HostnameType: resource-name      
       Tags:
       - Key: Name
@@ -130,7 +130,7 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       AvailabilityZone: !Select [1, !GetAZs '']
-      MapPublicIpOnLaunch: true
+      MapPublicIpOnLaunch: false
       CidrBlock: !Sub '10.${ClassB}.16.0/20'
       Ipv6CidrBlock: 
         Fn::Sub:
@@ -141,7 +141,7 @@ Resources:
       EnableDns64: true
       PrivateDnsNameOptionsOnLaunch:
         EnableResourceNameDnsAAAARecord: true
-        EnableResourceNameDnsARecord: true
+        EnableResourceNameDnsARecord: false
         HostnameType: resource-name                  
       Tags:
       - Key: Name
@@ -240,12 +240,18 @@ Resources:
       DestinationCidrBlock: '0.0.0.0/0'
       GatewayId: !Ref InternetGateway
 
+  # RouteTablePublicIpv6Route:
+  #   Type: AWS::EC2::Route
+  #   Properties:
+  #     DestinationIpv6CidrBlock: ::/0
+  #     RouteTableId: !Ref RouteTablePublic
+  #     EgressOnlyInternetGatewayId: !Ref EgressOnlyInternetGateway               
   RouteTablePublicIpv6Route:
     Type: AWS::EC2::Route
     Properties:
       DestinationIpv6CidrBlock: ::/0
       RouteTableId: !Ref RouteTablePublic
-      EgressOnlyInternetGatewayId: !Ref EgressOnlyInternetGateway               
+      GatewayId: !Ref InternetGateway   
 
 ########### route table assocations 
   RouteTableAAssociationPublic:
@@ -287,6 +293,7 @@ Resources:
     Type: AWS::EC2::Route
     Properties:
       DestinationIpv6CidrBlock: ::/0
+      # !Split [ '00::/56', !Select [ 0, !GetAtt VPC.Ipv6CidrBlocks ]]
       RouteTableId: !Ref RouteTableAPrivate
       EgressOnlyInternetGatewayId: !Ref EgressOnlyInternetGateway
 
@@ -331,26 +338,28 @@ Resources:
       - Key: Owner
         Value: !Ref OwnerName
 
-  # SubnetNetworkAclAssociationAPublic:
-  #   Type: 'AWS::EC2::SubnetNetworkAclAssociation'
-  #   Properties:
-  #     SubnetId: !Ref SubnetAPublic
-  #     NetworkAclId: !Ref NetworkAclPublic
-  # SubnetNetworkAclAssociationAPrivate:
-  #   Type: 'AWS::EC2::SubnetNetworkAclAssociation'
-  #   Properties:
-  #     SubnetId: !Ref SubnetAPrivate
-  #     NetworkAclId: !Ref NetworkAclPrivate
-  # SubnetNetworkAclAssociationBPublic:
-  #   Type: 'AWS::EC2::SubnetNetworkAclAssociation'
-  #   Properties:
-  #     SubnetId: !Ref SubnetBPublic
-  #     NetworkAclId: !Ref NetworkAclPublic
-  # SubnetNetworkAclAssociationBPrivate:
-  #   Type: 'AWS::EC2::SubnetNetworkAclAssociation'
-  #   Properties:
-  #     SubnetId: !Ref SubnetBPrivate
-  #     NetworkAclId: !Ref NetworkAclPrivate
+  SubnetNetworkAclAssociationAPublic:
+    Type: 'AWS::EC2::SubnetNetworkAclAssociation'
+    Properties:
+      SubnetId: !Ref SubnetAPublic
+      NetworkAclId: !Ref NetworkAclPublic
+  SubnetNetworkAclAssociationBPublic:
+    Type: 'AWS::EC2::SubnetNetworkAclAssociation'
+    Properties:
+      SubnetId: !Ref SubnetBPublic
+      NetworkAclId: !Ref NetworkAclPublic
+
+  SubnetNetworkAclAssociationAPrivate:
+    Type: 'AWS::EC2::SubnetNetworkAclAssociation'
+    Properties:
+      SubnetId: !Ref SubnetAPrivate
+      NetworkAclId: !Ref NetworkAclPrivate
+
+  SubnetNetworkAclAssociationBPrivate:
+    Type: 'AWS::EC2::SubnetNetworkAclAssociation'
+    Properties:
+      SubnetId: !Ref SubnetBPrivate
+      NetworkAclId: !Ref NetworkAclPrivate
 
 
   NetworkAclEntryInPublicAllowAll:

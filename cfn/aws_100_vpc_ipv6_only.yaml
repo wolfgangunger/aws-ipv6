@@ -244,12 +244,18 @@ Resources:
   #     DestinationCidrBlock: '0.0.0.0/0'
   #     GatewayId: !Ref InternetGateway
 
+  # RouteTablePublicIpv6Route:
+  #   Type: AWS::EC2::Route
+  #   Properties:
+  #     DestinationIpv6CidrBlock: ::/0
+  #     RouteTableId: !Ref RouteTablePublic
+  #     EgressOnlyInternetGatewayId: !Ref EgressOnlyInternetGateway               
   RouteTablePublicIpv6Route:
     Type: AWS::EC2::Route
     Properties:
       DestinationIpv6CidrBlock: ::/0
       RouteTableId: !Ref RouteTablePublic
-      EgressOnlyInternetGatewayId: !Ref EgressOnlyInternetGateway               
+      GatewayId: !Ref InternetGateway   
 
 ########### route table assocations 
   RouteTableAAssociationPublic:
