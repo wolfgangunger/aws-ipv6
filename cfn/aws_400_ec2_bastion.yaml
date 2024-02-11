@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'EC2 for IPv6, by Wolfgang Unger ' 
+Description: 'EC2 for IPv6, bastion host, by Wolfgang Unger ' 
 
 
 Parameters:
@@ -17,7 +17,7 @@ Parameters:
   ImageId:
     Description: Inform the image id
     Type: String
-    Default: "ami-027d95b1c717e8c5d"
+    Default: "ami-027d95b1c717e8c5d" ## eu-west-2
 ################## Resources ##############################    
 Resources:
 
@@ -26,7 +26,7 @@ Resources:
     Properties:
       KeyName: BastionKeyPair
 
-  Ec2Instance: 
+  BastionServer: 
     Type: AWS::EC2::Instance
     Properties: 
       ImageId: !Ref ImageId
@@ -34,6 +34,13 @@ Resources:
       InstanceType: t3.micro     
       SubnetId:  
         Fn::ImportValue: !Sub '${ParentVPCStack}-SubnetAPublic'
+      IamInstanceProfile: 
+        Fn::ImportValue: SSMInstanceProfile
+      Tags: 
+        - Key: "Owner"
+          Value: !Ref OwnerName
+        - Key: "Name"
+          Value: BastionServer
 
 Outputs:
 

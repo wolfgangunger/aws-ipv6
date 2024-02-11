@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Systems Manager Instance Role"
+
+Parameters:
+  OwnerName:
+    Description: An owner name, used in tags
+    Type: String
+    Default: "wolfgang.unger"
+
+Resources:
+  SSMInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: !Sub "${AWS::StackName}-SMM-InstanceProfile"
+      Path: /
+      Roles:
+        - !Ref SSMInstanceRole
+
+  SSMInstanceRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: !Sub "${AWS::StackName}-SMM-InstanceRole"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action: "sts:AssumeRole"
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+      Tags:
+        - Key: Name
+          Value: "OguloSSMEC2InstanceRole"
+        - Key: Owner
+          Value: !Ref OwnerName
+
+Outputs:
+  SSMInstanceRole:
+    Value: !Ref SSMInstanceRole
+    Description: The SSMInstanceRole
+    Export:
+      Name: SSMInstanceRole
+
+  SSMInstanceProfile:
+    Value: !Ref SSMInstanceProfile
+    Description: The SSMInstanceProfile
+    Export:
+      Name: SSMInstanceProfile

@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'A dual Stack VPC with IPv6, 2 public and 2 private subnets, by Wolfgang Unger ' 
+Description: 'A VPC with IPv6 only subnets, 2 public and 2 private subnets, by Wolfgang Unger ' 
 
 
 Parameters:
@@ -121,7 +121,7 @@ Resources:
         HostnameType: resource-name      
       Tags:
       - Key: Name
-        Value: 'A public'
+        Value: 'A public IPv6 Only'
       - Key: Owner
         Value: !Ref OwnerName
         
@@ -147,7 +147,7 @@ Resources:
         HostnameType: resource-name                  
       Tags:
       - Key: Name
-        Value: 'B public'
+        Value: 'B public IPv6 Only'
       - Key: Owner
         Value: !Ref OwnerName
 
@@ -173,7 +173,7 @@ Resources:
         HostnameType: resource-name                  
       Tags:
       - Key: Name
-        Value: 'A private'
+        Value: 'A private IPv6 Only'
       - Key: Owner
         Value: !Ref OwnerName 
 
@@ -198,7 +198,7 @@ Resources:
         HostnameType: resource-name                  
       Tags:
       - Key: Name
-        Value: 'B private'
+        Value: 'B private IPv6 Only'
       - Key: Owner
         Value: !Ref OwnerName      
 
@@ -208,7 +208,7 @@ Resources:
     Properties:
       Tags:
       - Key: Name
-        Value: 'IGW'
+        Value: 'IGW IPv6 only'
       - Key: Owner
         Value: !Ref OwnerName        
 

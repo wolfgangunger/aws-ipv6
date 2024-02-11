@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "R53 Hosted Zone"
+
+Parameters:
+  OwnerName:
+    Description: An owner name, used in tags
+    Type: String
+    Default: "wolfgang.unger"
+
+  Domain:
+    Description: An owner name, used in tags
+    Type: String
+    Default: "sccbrasil.com"
+
+  SubDomain:
+    Description: An owner name, used in tags
+    Type: String
+    Default: "ipv6"
+
+Resources:
+  HostedZone:
+    Type: AWS::Route53::HostedZone
+    Properties:
+      Name: !Sub "${SubDomain}.${Domain}"
+      HostedZoneTags:
+        - Key: Owner
+          Value: !Ref OwnerName
+
+#############
+Outputs:
+  HostedZone:
+    Description: "The hosted zone"
+    Value: !Ref HostedZone
+    Export:
+      Name: "DNS-HostedZoneId"
+

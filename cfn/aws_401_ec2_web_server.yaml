@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'EC2 for IPv6, webserver, by Wolfgang Unger ' 
+
+
+Parameters:
+
+  ParentVPCStack:
+    Description: "Stack name of parent VPC stack"
+    Type: String
+    Default: "IPv6VPC"
+
+  OwnerName:
+    Description: An owner name, used in tags
+    Type: String
+    Default: "wolfgang.unger"
+
+  ImageId:
+    Description: Inform the image id
+    Type: String
+    Default: "ami-027d95b1c717e8c5d" ## eu-west-2
+################## Resources ##############################    
+Resources:
+
+  WebserverKeyPair:
+    Type: 'AWS::EC2::KeyPair'
+    Properties:
+      KeyName: WebserverKeyPair
+
+  WebServerSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP
+      GroupName: "Webserver-SG"
+      VpcId: 
+          Fn::ImportValue:  !Sub '${ParentVPCStack}-VPC'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIpv6: ::/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIpv6: ::/0
+      Tags: 
+        - Key: "Owner"
+          Value: !Ref OwnerName
+        - Key: "Name"
+          Value: WebServerSG        
+
+  WebServerEc2Instance: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: !Ref ImageId
+      KeyName: !Ref WebserverKeyPair 
+      InstanceType: t3.micro     
+      SubnetId:  
+        Fn::ImportValue: !Sub '${ParentVPCStack}-SubnetAPublic'
+      IamInstanceProfile: 
+        Fn::ImportValue: SSMInstanceProfile      
+      SecurityGroupIds:
+        - !Ref  WebServerSG      
+      UserData: 
+          Fn::Base64: !Sub |
+            #!/bin/bash -xe
+            sudo yum install -y httpd
+            sudo chkconfig httpd on
+            sudo service httpd start
+      Tags: 
+        - Key: "Owner"
+          Value: !Ref OwnerName
+        - Key: "Name"
+          Value: WebServer
+ ### no support for IPv6 get Att yet
+  # WebserverRecordset:
+  #   Type: AWS::Route53::RecordSet
+  #   Properties:
+  #     Name: webserver.ipv6.sccbrasil.com
+  #     HostedZoneId: !ImportValue "DNS-HostedZoneId"
+  #     Type: AAAA
+  #     Comment: RecordsSet for Webserver
+  #     ResourceRecords:
+  #     - !GetAtt Ec2Instance.PublicIp
+
+Outputs:
+
+  WebServerInstanceId:
+    Value: !Ref WebServerEc2Instance
+    Description: WebServerEc2InstanceInstanceId
+    Export:
+      Name: WebServerEc2InstanceInstanceId
+      
