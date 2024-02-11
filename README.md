@@ -14,8 +14,8 @@ Parameters:
   ClassB:  Description: 'Class B of IPv4 VPC (10.XXX.0.0/16)'  - not relevant but must be defined
   OwnerName:   An owner name, used in tags  
 
-# status
-## ec 2 instances
+### status vpc dual stack
+#### ec 2 instances
 connect to ec2 instances with Sessions Manager works ( but only in Dual Stack Mode, IPv6 support in Sessions Manager not ready)
 ssh from instance to instance works   
 ping from instance to instance works 
