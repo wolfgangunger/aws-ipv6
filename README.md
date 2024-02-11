@@ -29,6 +29,7 @@ CNAME to EC2 DNS name does not work (i-0a9e7fdd1043ab966.eu-west-2.compute.inter
 ALB Dual Stack working
 RS A Alias to ALB working
 
+### status vpc ipv6 only
 
 ### ec2 templates
 status, see vpc findings
