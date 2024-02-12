@@ -47,6 +47,12 @@ curl from instance to instance and from internet works
 Route 53
 AAAA record to webserver works (IPv6 address), works both if webserver is in private or public subnet    
 
+#### Elastic Beanstalk
+not supported yet for IPv6  
+
+#### RDS
+Not yet IPv6 only support
+
 ### ec2 templates
 status, see vpc findings
 
