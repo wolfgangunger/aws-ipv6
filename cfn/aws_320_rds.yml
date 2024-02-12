@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  Description": "RDS in IPv6 VPC
+
+Parameters:
+  ParentVPCStack:
+    Description: Choose the parent VPC Stack
+    Type: "String"
+    Default: "IPv6VPC"
+
+  OwnerName:
+    Description: An owner name, used in tags
+    Type: String
+    Default: "wolfgang.unger"
+
+Resources:
+  RDSSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow 3306
+      GroupName: "RDS-SG"
+      VpcId: 
+          Fn::ImportValue:  !Sub '${ParentVPCStack}-VPC'
+      SecurityGroupIngress: 
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          CidrIpv6: 
+             Fn::ImportValue:  !Sub '${ParentVPCStack}-Ipv6CidrBlocks'
+
+      Tags: 
+        - Key: "Owner"
+          Value: !Ref OwnerName
+        - Key: "Name"
+          Value: RDS-SG     
+
+  DBSubnetGroup:
+    Type: "AWS::RDS::DBSubnetGroup"
+    Properties:
+      DBSubnetGroupDescription: DBSubnetGroup
+      SubnetIds:
+        !Split [
+          ",",
+          { "Fn::ImportValue": !Sub "${ParentVPCStack}-SubnetsPrivate" },
+        ]
+      Tags:
+        - Key: Owner
+          Value: !Ref OwnerName
+
+  MyDB:
+    DependsOn:
+      - DBSubnetGroup
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      DBInstanceIdentifier: "mysqlipv6"
+      DBName: "testdb"
+      DBInstanceClass: db.t4g.small
+      AllocatedStorage: 20
+      Engine: MySQL
+      EngineVersion: "8.0.33"
+      MasterUsername: "admin"
+      MasterUserPassword: "admin987"
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      NetworkType: DUAL ## must be set
+      VPCSecurityGroups:
+         - !Ref RDSSG

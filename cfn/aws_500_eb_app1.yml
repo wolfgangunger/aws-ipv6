@@ -1,0 +1,11 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Elasticbeanstalk App Python - EB not yet ready for IPv6
+
+Parameters:
+  ParentVPCStack:
+    Description: Choose the parent VPC Stack
+    Type: "String"
+    Default: "VPCStack"
+  ZipFile:
+    Type: String
+

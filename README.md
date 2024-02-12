@@ -29,7 +29,23 @@ CNAME to EC2 DNS name does not work (i-0a9e7fdd1043ab966.eu-west-2.compute.inter
 ALB Dual Stack working
 RS A Alias to ALB working
 
-### status vpc ipv6 only
+#### Elastic Beanstalk
+not supported yet for IPv6  
+
+#### RDS
+see stack aws_320_rds  
+setting up a rds mysql in dual stack mode is possible with cfn  
+see MYSQL documentation for IPv6 support and allow connecting  
+https://dev.mysql.com/doc/refman/8.0/en/ipv6-support.html  
+
+### status vpc ipv6 only  
+connect to ec2 instances with Sessions Manager not working
+ssh from instance to instance works   
+ping from instance to instance works 
+curl from instance to instance and from internet works  
+
+Route 53
+AAAA record to webserver works (IPv6 address), works both if webserver is in private or public subnet    
 
 ### ec2 templates
 status, see vpc findings
@@ -42,3 +58,6 @@ todo
   
 ## cdk
 todo  
+
+#### references  
+https://docs.aws.amazon.com/vpc/latest/userguide/aws-ipv6-support.html  
