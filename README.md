@@ -51,7 +51,7 @@ AAAA record to webserver works (IPv6 address), works both if webserver is in pri
 not supported yet for IPv6  
 
 #### RDS
-Not yet IPv6 only support
+Not yet IPv6 only support  
 
 ### ec2 templates
 status, see vpc findings
