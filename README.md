@@ -57,19 +57,19 @@ setting up a rds mysql in dual stack mode is possible with cfn
 see MYSQL documentation for IPv6 support and allow connecting  
 https://dev.mysql.com/doc/refman/8.0/en/ipv6-support.html  
 
-#### ECS/Fargate
-wip  
-enabled ecs ipv6 account settings
-https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html#fargate-task-networking-vpc-dual-stack
-https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-account-settings.html
-https://docs.aws.amazon.com/AmazonECS/latest/developerguide/account-setting-management-cli.html
-dualStackIPv6 can only be set via commandline:  
-aws ecs put-account-setting-default --name dualStackIPv6 --value enabled --region eu-west-1  
-aws ecs put-account-setting --name dualStackIPv6 --value enabled --region eu-west-1  
+#### ECS/Fargate  
+wip    
+enabled ecs ipv6 account settings  
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html#fargate-task-networking-vpc-dual-stack  
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-account-settings.html  
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/account-setting-management-cli.html  
+dualStackIPv6 can only be set via commandline:    
+aws ecs put-account-setting-default --name dualStackIPv6 --value enabled --region eu-west-1    
+aws ecs put-account-setting --name dualStackIPv6 --value enabled --region eu-west-1    
+  
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html  
 
-https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html
-
-issue pulling the image
+issue pulling the image  
 still not connecting with in private subnet with IPv6 address. Only possible with public IPv4 address
 
 ### status vpc ipv6 only  
@@ -100,4 +100,4 @@ todo
 todo  
 
 #### references  
-https://docs.aws.amazon.com/vpc/latest/userguide/aws-ipv6-support.html  
+https://docs.aws.amazon.com/vpc/latest/userguide/aws-ipv6-support.html    
