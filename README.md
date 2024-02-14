@@ -65,12 +65,12 @@ with IPv6 still issues:
 
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html  
 checklist:   
--The task or service uses Fargate platform version 1.4.0 or later for Linux. (yes)  
--Your VPC and subnet are enabled for IPv6 (yes)
--Your subnet is enabled for auto-assigning IPv6 addresses (yes).
--Your Amazon ECS dualStackIPv6 account setting is turned on (yes)
-see:
-enabling ecs ipv6 account settings  
+-The task or service uses Fargate platform version 1.4.0 or later for Linux. (yes)    
+-Your VPC and subnet are enabled for IPv6 (yes)  
+-Your subnet is enabled for auto-assigning IPv6 addresses (yes).  
+-Your Amazon ECS dualStackIPv6 account setting is turned on (yes)  
+see:  
+enabling ecs ipv6 account settings    
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html#fargate-task-networking-vpc-dual-stack  
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-account-settings.html  
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/account-setting-management-cli.html  
