@@ -7,15 +7,20 @@ Parameters:
     Type: String
     Default: IPv6VPC
 
+  URL:
+    Description: "URL for RS"
+    Type: String
+    Default: "alb.ireland.sccbrasil.com"
+
 Resources:
   ApiServerRecordset:
     Type: AWS::Route53::RecordSet
     Properties:
-      Name: "alb.ipv6.sccbrasil.com"
+      Name: !Ref URL
       HostedZoneId: !ImportValue "DNS-HostedZoneId"
       Type: A
       #TTL: "300"
-      Comment: RecordsSet for Api Server LB
+      Comment: RecordsSet for Web Server LB
       AliasTarget:
         HostedZoneId: !ImportValue "LB-Web-Server-HostedZoneId"
         DNSName: !ImportValue "LB-Web-Server"

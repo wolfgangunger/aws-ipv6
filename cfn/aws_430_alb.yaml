@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >
-  Loadbalancer for Web Server, just HTTP, no certificate
+  Loadbalancer for Web Server, just HTTP, no certificate, for aws_401_ec2_webserver
 
 Parameters:
   ParentVPCStack:
@@ -12,6 +12,12 @@ Parameters:
     Description: An owner name, used in tags
     Type: String
     Default: "wolfgang.unger"
+
+########## outputs for IPv6 address not ready in cloudformation, we have to pass the ip address as variable
+  IPv6Address: 
+    Description: IPv6 address of the instance
+    Type: String
+    Default: "2a05:d018:16e5:e200:8910:89f0:9df3:6b98"
 
 Resources:
   SGApiAlb:
@@ -41,9 +47,9 @@ Resources:
         - !Ref SGApiAlb
       Subnets:
         - !ImportValue
-          "Fn::Sub": "${ParentVPCStack}-SubnetAPublic"
+           "Fn::Sub": '${ParentVPCStack}-SubnetAPublic'    
         - !ImportValue
-          "Fn::Sub": "${ParentVPCStack}-SubnetBPublic"
+           "Fn::Sub": '${ParentVPCStack}-SubnetBPublic'                    
       Tags:
         - Key: "Name"
           Value: "Alb Web-Server"
@@ -63,7 +69,9 @@ Resources:
   DefaultTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      Name: TargetGroupAlbApiServer
+      Name: TargetGroupWebServer
+      VpcId: 
+        Fn::ImportValue: !Sub '${ParentVPCStack}-VPC'
       HealthCheckIntervalSeconds: 30
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 10
@@ -71,15 +79,19 @@ Resources:
       HealthCheckPath: "/"
       HealthyThresholdCount: 3
       Matcher:
-        HttpCode: "200-399"
+        HttpCode: "200-499"
       Port: 80
       Protocol: HTTP
-      TargetType: instance
+      IpAddressType: ipv6
+      #TargetType: instance
+      ## only ip supported for ipv6  
+      TargetType: ip      
       Targets:
-        - Id: !ImportValue WebServerEc2InstanceInstanceId
+        - Id: !Ref IPv6Address
           Port: 80
-      VpcId: 
-        Fn::ImportValue: !Sub '${ParentVPCStack}-VPC'
+
+
+
 
 #############
 Outputs:

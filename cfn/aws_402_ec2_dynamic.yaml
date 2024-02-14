@@ -1,0 +1,109 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'EC2 for IPv6, to launch in different VPCs and subnets, needs aws_020_ssm_role stack for import' 
+
+
+Parameters:
+
+  OwnerName:
+    Description: An owner name, used in tags
+    Type: String
+    Default: "wolfgang.unger"
+
+  ImageId:
+    Description: Inform the image id
+    Type: String
+    #Default: "ami-027d95b1c717e8c5d" ## eu-west-2
+    #Default: "ami-03cceb19496c25679" ## eu-central-1
+    Default: "ami-0766b4b472db7e3b9" ## ireland
+
+  VPC:
+    Type: AWS::EC2::VPC::Id
+    Description: Choose which VPC the Application Load Balancer should be deployed to
+
+  Subnet:
+    Description: Choose which subnets the Instance should be deployed
+    Type: AWS::EC2::Subnet::Id
+
+
+  KeyPairName:
+    Description: Keypair for the instance, must exist
+    Type: String
+    Default: wolfgangireland
+################## Resources ##############################    
+Resources:
+
+  # EC2KeyPair:
+  #   Type: 'AWS::EC2::KeyPair'
+  #   Properties:
+  #     KeyName: EC2KeyPair
+
+  EC2SG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP and SSH
+      GroupName: "EC2-Test-SG"
+      VpcId: !Ref VPC
+      SecurityGroupIngress:     
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIpv6: ::/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0   
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIpv6: ::/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0            
+        - IpProtocol: icmpv6
+          FromPort: -1
+          ToPort: -1
+          CidrIpv6: ::/0
+        - IpProtocol: icmp
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0                 
+      Tags: 
+        - Key: "Owner"
+          Value: !Ref OwnerName
+        - Key: "Name"
+          Value: EC2-Test-SG        
+
+  Ec2Instance: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: !Ref ImageId
+      #KeyName: !Ref EC2KeyPair 
+      KeyName: !Ref KeyPairName
+      InstanceType: t3.micro     
+      SubnetId:  !Ref Subnet
+      IamInstanceProfile: 
+        Fn::ImportValue: SSMInstanceProfile      
+      SecurityGroupIds:
+        - !Ref  EC2SG      
+      UserData: 
+          Fn::Base64: !Sub |
+            #!/bin/bash -xe
+            sudo yum install -y httpd
+            sudo chkconfig httpd on
+            sudo service httpd start
+      Tags: 
+        - Key: "Owner"
+          Value: !Ref OwnerName
+        - Key: "Name"
+          Value: EC2 for test
+
+
+Outputs:
+
+  EC2InstanceId:
+    Value: !Ref Ec2Instance
+    Description: Ec2InstanceInstanceId
+    Export:
+      Name: Ec2InstanceInstanceId
+      

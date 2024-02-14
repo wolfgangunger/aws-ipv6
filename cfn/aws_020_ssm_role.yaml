@@ -34,7 +34,7 @@ Resources:
 
       Tags:
         - Key: Name
-          Value: "OguloSSMEC2InstanceRole"
+          Value: "SSMEC2InstanceRole"
         - Key: Owner
           Value: !Ref OwnerName
 

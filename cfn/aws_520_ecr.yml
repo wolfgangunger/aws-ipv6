@@ -1,0 +1,20 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'ECS-Repository for Images'
+
+Resources:      
+  ECSRepo:    
+    Type: "AWS::ECR::Repository"
+    Properties: 
+      RepositoryName: ecs-repository-ipv6
+
+ 
+#####################################################################################
+#  Outputs
+######################################################################################
+Outputs:    
+  Arn:
+    Description: The just created Repository
+    Value: !GetAtt ECSRepo.Arn
+    Export:
+        Name: ECSRepo

@@ -17,7 +17,8 @@ Parameters:
   ImageId:
     Description: Inform the image id
     Type: String
-    Default: "ami-027d95b1c717e8c5d" ## eu-west-2
+    #Default: "ami-027d95b1c717e8c5d" ## eu-west-2
+    Default: "ami-0766b4b472db7e3b9" ## eu-west-1
 ################## Resources ##############################    
 Resources:
 

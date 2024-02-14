@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'A VPC with IPv6 only subnets, 2 public and 2 private subnets, by Wolfgang Unger . Name 	IPV6OnlyVPC for further Stacks' 
+Description: 'A VPC with IPv6 only subnets, 2 public and 2 private subnets, by Wolfgang Unger . Name 	IPV6OnlyVPC for subsequent Stacks' 
 
 
 Parameters:

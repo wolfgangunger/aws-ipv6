@@ -1,0 +1,135 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'EC2 for IPv6, to launch in different VPCs and subnets, needs aws_020_ssm_role stack for import' 
+
+
+Parameters:
+
+  OwnerName:
+    Description: An owner name, used in tags
+    Type: String
+    Default: "wolfgang.unger"
+
+  ParentVPCStack:
+    Description: "Stack name of parent VPC stack"
+    Type: String
+    Default: "IPv6VPC"
+
+
+
+################## Resources ##############################    
+Resources:
+
+
+  PublicSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP, HTTPS and SSH and icmp from internet
+      GroupName: "Public-SG-IPv6"
+      VpcId: 
+          Fn::ImportValue:  !Sub '${ParentVPCStack}-VPC'
+      SecurityGroupIngress:     
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIpv6: ::/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0   
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIpv6: ::/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0             
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIpv6: ::/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0            
+        - IpProtocol: icmpv6
+          FromPort: -1
+          ToPort: -1
+          CidrIpv6: ::/0
+        - IpProtocol: icmp
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0                 
+      Tags: 
+        - Key: "Owner"
+          Value: !Ref OwnerName
+        - Key: "Name"
+          Value: Public-SG-IPv6        
+##
+  PrivateSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP, HTTPS and SSH and icmp from VPC
+      GroupName: "Private-SG-IPv6"
+      VpcId: 
+          Fn::ImportValue:  !Sub '${ParentVPCStack}-VPC'
+      SecurityGroupIngress:     
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIpv6: 
+                Fn::ImportValue:  !Sub '${ParentVPCStack}-Ipv6CidrBlocks'
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 
+                Fn::ImportValue:  !Sub '${ParentVPCStack}-CidrBlock'
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIpv6: 
+                Fn::ImportValue:  !Sub '${ParentVPCStack}-Ipv6CidrBlocks'
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp:     
+             Fn::ImportValue:  !Sub '${ParentVPCStack}-CidrBlock'       
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIpv6: 
+                Fn::ImportValue:  !Sub '${ParentVPCStack}-Ipv6CidrBlocks'
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 
+             Fn::ImportValue:  !Sub '${ParentVPCStack}-CidrBlock'          
+        - IpProtocol: icmpv6
+          FromPort: -1
+          ToPort: -1
+          CidrIpv6: 
+                Fn::ImportValue:  !Sub '${ParentVPCStack}-Ipv6CidrBlocks'
+        - IpProtocol: icmp
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 
+             Fn::ImportValue:  !Sub '${ParentVPCStack}-CidrBlock'            
+      Tags: 
+        - Key: "Owner"
+          Value: !Ref OwnerName
+        - Key: "Name"
+          Value: Private-SG-IPv6       
+
+Outputs:
+
+  PublicSG:
+    Value: !Ref PublicSG
+    Description: PublicSG
+    Export:
+      Name: PublicSG
+      
+  PrivateSG:
+    Value: !Ref PrivateSG
+    Description: PrivateSG
+    Export:
+      Name: PrivateSG      
