@@ -59,7 +59,18 @@ https://dev.mysql.com/doc/refman/8.0/en/ipv6-support.html
 
 #### ECS/Fargate  
 wip    
-enabled ecs ipv6 account settings  
+works with a public ipv4 address
+of course not possible with private ipv4 address ( no NAT)
+with IPv6 still issues:
+
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html  
+checklist:   
+-The task or service uses Fargate platform version 1.4.0 or later for Linux. (yes)  
+-Your VPC and subnet are enabled for IPv6 (yes)
+-Your subnet is enabled for auto-assigning IPv6 addresses (yes).
+-Your Amazon ECS dualStackIPv6 account setting is turned on (yes)
+see:
+enabling ecs ipv6 account settings  
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html#fargate-task-networking-vpc-dual-stack  
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-account-settings.html  
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/account-setting-management-cli.html  
