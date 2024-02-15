@@ -114,7 +114,8 @@ Loadbalancer for EC2 instance
 can be called by R53 Recordset A Alias  
   
 ## cdk
-todo  
+under construction
+first IPv6 Dual Stack VPC created  
 
 ## references  
 https://docs.aws.amazon.com/vpc/latest/userguide/aws-ipv6-support.html    
