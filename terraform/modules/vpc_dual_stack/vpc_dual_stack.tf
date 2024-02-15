@@ -349,7 +349,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "flow_log_role_policy" {
-  name   = "FlowLogRolePolicy"
+  name   = "FlowLogRolePolicy-${var.env}"
   role   = aws_iam_role.flow_log_role.id
   policy = <<EOF
 {

@@ -22,7 +22,7 @@ This is an example of a terraform code to deploy a vpc using ipv6, 2 private and
 
 ## Configure the variables 
 
-The terraform.tfvars contains some variable values that must be informed before deplot the terraform.
+The terraform.tfvars contains some variable values that must be informed before deploy the terraform.
 
 ## Deploying infrastructure with terraform
 
@@ -30,9 +30,7 @@ AWS Credentials:
 Use the aws configure command to configure your terminal to use the credentials(Access Key and Secret Key) of your iam user.
 
 Init:
-Use the terraform init command to initialyze the terraform 
-  
-  Ps: When creating or changing between backend configurations use the -reconfigure option.
+terraform init
 
 Plan:   
 terraform plan
