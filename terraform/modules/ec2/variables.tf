@@ -14,3 +14,11 @@ variable "env" {
   description = "environment used also for naming resources"
   type        = string
 }
+
+variable "hosted_zone_id" {
+  type = string
+}
+
+variable "route53_domain" {
+  type = string
+}
