@@ -331,7 +331,7 @@ resource "aws_flow_log" "flow_log" {
 
 
 resource "aws_iam_role" "flow_log_role" {
-  name               = "FlowLogRole"
+  name               = "FlowLogRole-${var.env}"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -349,7 +349,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "flow_log_role_policy" {
-  name   = "FlowLogRolePolicy"
+  name   = "FlowLogRolePolicy-${var.env}"
   role   = aws_iam_role.flow_log_role.id
   policy = <<EOF
 {
