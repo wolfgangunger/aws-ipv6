@@ -8,5 +8,3 @@ env          = "ohio"
 ### route53 ###
 route53_domain = "ohio.sccbrasil.com"
 
-
-

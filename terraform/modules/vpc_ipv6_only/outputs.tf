@@ -22,3 +22,8 @@ output "subnet_private_b_id" {
   description = "The IDs of the subnet private b"
   value       = aws_subnet.private-b.id
 }
+
+output "ipv6_cidr_block" {
+  description = "The IPV6 CIDR block of the VPC"
+  value       = aws_vpc.ipv6_vpc.ipv6_cidr_block
+}

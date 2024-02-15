@@ -64,3 +64,14 @@ module "alb" {
   hosted_zone_id            = module.route53.hosted_zone_id
   web_server_ipv6_addresses = module.ec2_webserver.web_server_ipv6_addresses
 }
+
+# Create an RDS mysql database
+module "rds" {
+  source  = "./modules/rds"
+
+  ipv6_cidr_block   = module.vpc.ipv6_cidr_block
+  vpc_id            = module.vpc.vpc_id
+  private_subnets   = [module.vpc.subnet_private_a_id, module.vpc.subnet_private_b_id]
+  project_name      = var.project_name
+  env               = var.env
+}
