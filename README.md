@@ -29,6 +29,10 @@ ping from instance to instance works
 curl from instance to instance and from internet works  
 curl -g -6 'http://[2a05:d01c:c3e:6000:7400:30f3:1a33:bd35]:80/'  
 
+to connect from instance to instance upload the cert  
+scp -i C:\workspaces\git-wolfgang\wolfgangireland.pem  ec2-user@0.0.0.0:usr/bin  
+scp -i "wolfgangireland.pem" wolfgangireland.pem  ec2-0-0-0-0.eu-west-1.compute.amazonaws.com:/home/ssm-user  
+
 webserver
 can be reached by IPv6 address in browser, both in public and private subnet  
 http://[2a05:d018:16e5:e200:8910:89f0:9df3:6b98]/
@@ -75,8 +79,8 @@ https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-network
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-account-settings.html  
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/account-setting-management-cli.html  
 dualStackIPv6 can only be set via commandline:    
-aws ecs put-account-setting-default --name dualStackIPv6 --value enabled --region eu-west-1    
-aws ecs put-account-setting --name dualStackIPv6 --value enabled --region eu-west-1    
+aws ecs put-account-setting-default --name dualStackIPv6 --value enabled (--region eu-west-1)      
+aws ecs put-account-setting --name dualStackIPv6 --value enabled (--region eu-west-1)      
   
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html  
 
@@ -114,7 +118,8 @@ Loadbalancer for EC2 instance
 can be called by R53 Recordset A Alias  
   
 ## cdk
-todo  
+under construction
+first IPv6 Dual Stack VPC created  
 
 ## references  
 https://docs.aws.amazon.com/vpc/latest/userguide/aws-ipv6-support.html    

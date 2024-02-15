@@ -34,15 +34,6 @@ module "vpc" {
   env = var.env
 }
 
-# Create an EC2 instance running apache
-module "ec2_webserver" {
-  source = "./modules/ec2"
-
-  subnet_public_a_id = module.vpc.subnet_public_a_id
-  vpc_id    = module.vpc.vpc_id
-  env = var.env
-}
-
 # Create an Hosted Zone on Route 53
 module "route53" {
   source = "./modules/route53"
@@ -50,6 +41,17 @@ module "route53" {
   route53_domain = var.route53_domain
 }
 
+# Create an EC2 instance running apache
+module "ec2_webserver" {
+  source = "./modules/ec2"
+  route53_domain = var.route53_domain
+
+  subnet_public_a_id = module.vpc.subnet_public_a_id
+  hosted_zone_id     = module.route53.hosted_zone_id
+  vpc_id    = module.vpc.vpc_id
+  env = var.env
+
+}
 
 #### ALB with terraform do not work in ipv6 only vpc ###
 # Create an ALB to the Web Server
