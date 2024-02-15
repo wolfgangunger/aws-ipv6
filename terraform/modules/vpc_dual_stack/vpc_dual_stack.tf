@@ -1,9 +1,9 @@
 data "aws_availability_zones" "available" {}
 
 locals {
-  azs                          = slice(data.aws_availability_zones.available.names, 0, 3)
-  public_subnet_ipv6_prefixes  = [0, 1, 2]
-  private_subnet_ipv6_prefixes = [3, 4, 5]
+  azs                          = slice(data.aws_availability_zones.available.names, 0, 2)
+  public_subnet_ipv6_prefixes  = [0, 1]
+  private_subnet_ipv6_prefixes = [3, 4]
 }
 
 resource "aws_vpc" "ipv6_vpc" {
@@ -349,7 +349,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "flow_log_role_policy" {
-  name   = "FlowLogRolePolicy"
+  name   = "FlowLogRolePolicy-${var.env}"
   role   = aws_iam_role.flow_log_role.id
   policy = <<EOF
 {
