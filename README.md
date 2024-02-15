@@ -75,8 +75,8 @@ https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-network
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-account-settings.html  
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/account-setting-management-cli.html  
 dualStackIPv6 can only be set via commandline:    
-aws ecs put-account-setting-default --name dualStackIPv6 --value enabled --region eu-west-1    
-aws ecs put-account-setting --name dualStackIPv6 --value enabled --region eu-west-1    
+aws ecs put-account-setting-default --name dualStackIPv6 --value enabled (--region eu-west-1)      
+aws ecs put-account-setting --name dualStackIPv6 --value enabled (--region eu-west-1)      
   
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html  
 
