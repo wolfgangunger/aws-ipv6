@@ -105,10 +105,20 @@ status, see vpc findings
 output for ec2 ipv6 address not ready 
 
 ## terraform
-todo  
+VPC IPv6 dual stack or IPv6 only  
+EC2 instances:  
+Web server can be called directly by IPv6 address  
+http://[]  
+or by Route53 AAAA recordset  
+Loadbalancer for EC2 instance  
+can be called by R53 Recordset A Alias  
   
 ## cdk
 todo  
 
-#### references  
+## references  
 https://docs.aws.amazon.com/vpc/latest/userguide/aws-ipv6-support.html    
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html  
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-account-settings.html  
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/account-setting-management-cli.html  
+https://dev.mysql.com/doc/refman/8.0/en/ipv6-support.html   
