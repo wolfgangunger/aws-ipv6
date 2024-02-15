@@ -9,7 +9,5 @@ aws ecr get-login-password --region eu-west-1 | docker login --username AWS --pa
 
 
 
-scp -i C:\workspaces\git-wolfgang> 
-scp -i C:\workspaces\git-wolfgang\wolfgangireland.pem  ec2-user@0.0.0.0:usr/bin
-scp -i "wolfgangireland.pem" wolfgangireland.pem  ec2-0-0-0-0.eu-west-1.compute.amazonaws.com:/home/ssm-user
+
  

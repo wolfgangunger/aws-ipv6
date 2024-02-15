@@ -29,6 +29,10 @@ ping from instance to instance works
 curl from instance to instance and from internet works  
 curl -g -6 'http://[2a05:d01c:c3e:6000:7400:30f3:1a33:bd35]:80/'  
 
+to connect from instance to instance upload the cert  
+scp -i C:\workspaces\git-wolfgang\wolfgangireland.pem  ec2-user@0.0.0.0:usr/bin  
+scp -i "wolfgangireland.pem" wolfgangireland.pem  ec2-0-0-0-0.eu-west-1.compute.amazonaws.com:/home/ssm-user  
+
 webserver
 can be reached by IPv6 address in browser, both in public and private subnet  
 http://[2a05:d018:16e5:e200:8910:89f0:9df3:6b98]/
