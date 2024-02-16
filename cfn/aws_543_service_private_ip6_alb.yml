@@ -133,9 +133,10 @@ Resources:
       HealthCheckPort: 80
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 2
-      IpAddressType: ipv6
+      ## only working with ipv6
+      #IpAddressType: ipv6
+      IpAddressType: ipv4
       TargetType: ip
-      #TargetType: instance
       Name: !Ref 'ServiceName'
       Port: !Ref 'ContainerPort'
       Protocol: HTTP
