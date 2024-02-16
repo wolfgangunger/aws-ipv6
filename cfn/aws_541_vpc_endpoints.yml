@@ -55,5 +55,10 @@ Resources:
     Properties:
       ServiceName:  !Sub "com.amazonaws.${AWS::Region}.s3"
       VpcEndpointType: Gateway
+      RouteTableIds:
+        - Fn::ImportValue:
+            !Join ['-', [!Ref 'ParentVPCStack', 'RouteTableAPrivate']]
+        - Fn::ImportValue:
+            !Join ['-', [!Ref 'ParentVPCStack', 'RouteTableBPrivate']]
       VpcId: 
               Fn::ImportValue: !Sub '${ParentVPCStack}-VPC'

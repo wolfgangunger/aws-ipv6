@@ -532,3 +532,21 @@ Outputs:
 
 
 
+  # RouteTablesPrivate:
+  #   Description: 'Route tables private.'
+  #   Value: !Join [',', [!Ref RouteTableAPrivate, !Ref RouteTableBPrivate]]
+  #   Export:
+  #     Name: !Sub '${AWS::StackName}-RouteTablesPrivate'
+
+  RouteTableAPrivate:
+    Description: 'Route table A private.'
+    Value: !Ref RouteTableAPrivate
+    Export:
+      Name: !Sub '${AWS::StackName}-RouteTableAPrivate'      
+
+ 
+  RouteTableBPrivate:
+    Description: 'Route table B private.'
+    Value: !Ref RouteTableBPrivate
+    Export:
+      Name: !Sub '${AWS::StackName}-RouteTableBPrivate'          

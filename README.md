@@ -62,10 +62,11 @@ see MYSQL documentation for IPv6 support and allow connecting
 https://dev.mysql.com/doc/refman/8.0/en/ipv6-support.html  
 
 #### ECS/Fargate  
-wip    
-works with a public ipv4 address
+works but som steps required  
+
+works easy with a public ipv4 address
 of course not possible with private ipv4 address ( no NAT)
-with IPv6 still issues:
+with IPv6 see:
 
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html  
 checklist:   
@@ -83,9 +84,23 @@ aws ecs put-account-setting-default --name dualStackIPv6 --value enabled (--regi
 aws ecs put-account-setting --name dualStackIPv6 --value enabled (--region eu-west-1)      
   
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html  
+  
+issue pulling the image  :  
+still not connecting with in private subnet with IPv6 address. Only possible with public IPv4 address , ECR enpoint not IPv6 ready   
+so VPC endpoints required, see stack aws_541_endpoints   
+2 interface Endpoints for  
+com.amazonaws.region.ecr.dkr  
+and  
+com.amazonaws.region.ecr.api  
+both linked to your IPv6 VPC and private Subnets.  
+You need to create also a Gateway Endpoint to  
+com.amazonaws.region.s3  
 
-issue pulling the image  
-still not connecting with in private subnet with IPv6 address. Only possible with public IPv4 address
+for interface endpoints, the private subnets must be asociated  
+for the gateway endpoint, the private route tables must be asociated  
+your service security group must be asociated to the VPC endpoints !   
+
+Cloudwatch Logs not working, disable Log Collection 
 
 ### status vpc ipv6 only  
 connect to ec2 instances with Sessions Manager not working
