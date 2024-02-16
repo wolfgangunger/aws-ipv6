@@ -50,6 +50,23 @@ Resources:
       VpcId: 
               Fn::ImportValue: !Sub '${ParentVPCStack}-VPC'
 
+  LogsEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      SecurityGroupIds: 
+              - Fn::ImportValue:
+                  !Join [':', [!Ref 'EnvironmentName', 'FargateContainerSecurityGroup']]
+      ServiceName:  !Sub "com.amazonaws.${AWS::Region}.logs"
+      SubnetIds: 
+              - Fn::ImportValue:
+                  !Join ['-', [!Ref 'ParentVPCStack', 'SubnetAPrivate']]
+              - Fn::ImportValue:
+                  !Join ['-', [!Ref 'ParentVPCStack', 'SubnetBPrivate']]
+      VpcEndpointType: Interface
+      VpcId: 
+              Fn::ImportValue: !Sub '${ParentVPCStack}-VPC'              
+
   S3Endpoint:
     Type: AWS::EC2::VPCEndpoint
     Properties:

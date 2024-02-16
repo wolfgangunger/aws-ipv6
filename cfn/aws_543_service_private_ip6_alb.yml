@@ -95,6 +95,7 @@ Resources:
 
   Service:
     Type: AWS::ECS::Service
+    DependsOn: LoadBalancerRule
     Properties:
       ServiceName: !Ref 'ServiceName'
       Cluster: 
@@ -117,7 +118,54 @@ Resources:
             - Fn::ImportValue:
                 !Join ['-', [!Ref 'ParentVPCStack', 'SubnetBPrivate']]     
       TaskDefinition: !Ref 'TaskDefinition'
+      LoadBalancers:
+        - ContainerName: !Ref 'ServiceName'
+          ContainerPort: !Ref 'ContainerPort'
+          TargetGroupArn: !Ref 'TargetGroup'
 
 
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 6
+      HealthCheckPath: !Ref HealthCheckPath
+      HealthCheckProtocol: HTTP
+      HealthCheckPort: 80
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      IpAddressType: ipv6
+      TargetType: ip
+      #TargetType: instance
+      Name: !Ref 'ServiceName'
+      Port: !Ref 'ContainerPort'
+      Protocol: HTTP
+      UnhealthyThresholdCount: 2
+      VpcId:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ParentVPCStack', 'VPC']]
+
+  # Create a rule on the load balancer for routing traffic to the target group
+  LoadBalancerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - TargetGroupArn: !Ref 'TargetGroup'
+          Type: 'forward'
+      Conditions:
+        - Field: path-pattern
+          Values: [!Ref 'Path']
+      ListenerArn:
+        Fn::ImportValue:
+          !Join [':', [!Ref 'EnvironmentName', 'PublicListener']]
+      Priority: !Ref 'Priority'
 
 
+############# output     #######################
+Outputs:
+    ServiceUrl: 
+        Description: The URL endpoint for the service
+        Value: !Join
+          - ''
+          -  - Fn::ImportValue:
+                 !Join [':', [!Ref 'EnvironmentName', 'ExternalUrl']]
+             - !Ref HealthCheckPath
