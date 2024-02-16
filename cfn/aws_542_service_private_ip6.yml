@@ -79,8 +79,7 @@ Resources:
           Memory: 2048
           Image: !Ref 'ImageUrl'
           PortMappings:
-            - ContainerPort: !Ref 'ContainerPort'
-# we have to disable cloudwatch logs, would not work with ipv6 in private subnet            
+            - ContainerPort: !Ref 'ContainerPort'         
           # LogConfiguration:
           #     LogDriver: awslogs
           #     Options:
