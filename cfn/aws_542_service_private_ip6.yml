@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: AWS Fargate Service in private subnet, but accessible via a public load balancer. IPv4 with private IP can't work without NAT and routes for private IPs
+Description: AWS Fargate Service in private subnet, but accessible via a public load balancer. IPv6
 Parameters:
 
   ParentVPCStack:
@@ -80,7 +80,18 @@ Resources:
           Image: !Ref 'ImageUrl'
           PortMappings:
             - ContainerPort: !Ref 'ContainerPort'
+# we have to disable cloudwatch logs, would not work with ipv6 in private subnet            
+          # LogConfiguration:
+          #     LogDriver: awslogs
+          #     Options:
+          #         awslogs-group: !Ref AWS::StackName
+          #         awslogs-region: !Ref AWS::Region            
 
+  # CloudWatchLogsGroup:
+  #       Type: AWS::Logs::LogGroup
+  #       Properties: 
+  #           LogGroupName: !Ref AWS::StackName
+  #           RetentionInDays: 365  
 
   Service:
     Type: AWS::ECS::Service
@@ -105,7 +116,12 @@ Resources:
             - Fn::ImportValue:
                 !Join ['-', [!Ref 'ParentVPCStack', 'SubnetAPrivate']]
             - Fn::ImportValue:
-                !Join ['-', [!Ref 'ParentVPCStack', 'SubnetAPrivate']]       
+                !Join ['-', [!Ref 'ParentVPCStack', 'SubnetBPrivate']]
+          # Subnets:
+          #   - Fn::ImportValue:
+          #       !Join ['-', [!Ref 'ParentVPCStack', 'SubnetAPublic']]
+          #   - Fn::ImportValue:
+          #       !Join ['-', [!Ref 'ParentVPCStack', 'SubnetAPublic']]          
       TaskDefinition: !Ref 'TaskDefinition'
       LoadBalancers:
         - ContainerName: !Ref 'ServiceName'
@@ -122,7 +138,7 @@ Resources:
       HealthCheckPort: 80
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 2
-      #IpAddressType: ipv6
+      IpAddressType: ipv6
       TargetType: ip
       Name: !Ref 'ServiceName'
       Port: !Ref 'ContainerPort'

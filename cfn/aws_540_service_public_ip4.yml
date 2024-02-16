@@ -115,12 +115,12 @@ Resources:
           #   - Fn::ImportValue:
           #       !Join ['-', [!Ref 'ParentVPCStack', 'SubnetAPrivate']]
           #   - Fn::ImportValue:
-          #       !Join ['-', [!Ref 'ParentVPCStack', 'SubnetAPrivate']]
+          #       !Join ['-', [!Ref 'ParentVPCStack', 'SubnetBPrivate']]
           Subnets:
             - Fn::ImportValue:
                 !Join ['-', [!Ref 'ParentVPCStack', 'SubnetAPublic']]
             - Fn::ImportValue:
-                !Join ['-', [!Ref 'ParentVPCStack', 'SubnetAPublic']]          
+                !Join ['-', [!Ref 'ParentVPCStack', 'SubnetBPublic']]          
       TaskDefinition: !Ref 'TaskDefinition'
       LoadBalancers:
         - ContainerName: !Ref 'ServiceName'

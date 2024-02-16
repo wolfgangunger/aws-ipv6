@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: VPC Endpoints for ECR, S3
+
+Parameters:
+  ParentVPCStack:
+    Description: "Stack name of the parent VPC stack"
+    Type: String
+    Default: IPv6VPC
+
+  EnvironmentName:
+        Description: An environment name that will be prefixed to resource names
+        Type: String
+        Default: fargate-example
+
+############################
+Resources:
+
+  ECRDRKEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      SecurityGroupIds: 
+              - Fn::ImportValue:
+                  !Join [':', [!Ref 'EnvironmentName', 'FargateContainerSecurityGroup']]
+      ServiceName:  !Sub "com.amazonaws.${AWS::Region}.ecr.dkr"
+      SubnetIds: 
+              - Fn::ImportValue:
+                  !Join ['-', [!Ref 'ParentVPCStack', 'SubnetAPrivate']]
+              - Fn::ImportValue:
+                  !Join ['-', [!Ref 'ParentVPCStack', 'SubnetBPrivate']]
+      VpcEndpointType: Interface
+      VpcId: 
+              Fn::ImportValue: !Sub '${ParentVPCStack}-VPC'
+
+
+  ECRAPIEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      SecurityGroupIds: 
+              - Fn::ImportValue:
+                  !Join [':', [!Ref 'EnvironmentName', 'FargateContainerSecurityGroup']]
+      ServiceName:  !Sub "com.amazonaws.${AWS::Region}.ecr.api"
+      SubnetIds: 
+              - Fn::ImportValue:
+                  !Join ['-', [!Ref 'ParentVPCStack', 'SubnetAPrivate']]
+              - Fn::ImportValue:
+                  !Join ['-', [!Ref 'ParentVPCStack', 'SubnetBPrivate']]
+      VpcEndpointType: Interface
+      VpcId: 
+              Fn::ImportValue: !Sub '${ParentVPCStack}-VPC'
+
+  S3Endpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      ServiceName:  !Sub "com.amazonaws.${AWS::Region}.s3"
+      VpcEndpointType: Gateway
+      VpcId: 
+              Fn::ImportValue: !Sub '${ParentVPCStack}-VPC'
