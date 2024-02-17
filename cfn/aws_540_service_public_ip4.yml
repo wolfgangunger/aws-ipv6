@@ -19,7 +19,7 @@ Parameters:
 
   ImageUrl:
     Type: String
-    Default: 243277030071.dkr.ecr.eu-west-1.amazonaws.com/ecs-repository-ipv6:httpd
+    Default: xxx.dkr.ecr.eu-west-1.amazonaws.com/ecs-repository-ipv6:httpd
     Description: The url of a docker image 
     
   ContainerPort:

@@ -62,11 +62,15 @@ see MYSQL documentation for IPv6 support and allow connecting
 https://dev.mysql.com/doc/refman/8.0/en/ipv6-support.html  
 
 #### ECS/Fargate  
-works but som steps required  
+works but some steps required  
 
-works easy with a public ipv4 address
+works easy with a public ipv4 address, see stack aws_540_service_public_ip4
 of course not possible with private ipv4 address ( no NAT)
 with IPv6 see:
+VPC Endpoints to enable ECR communication :  
+aws_541_vpc_endpoints  
+Fargate Service without ALB see Stack aws_542_service_private_ip6  
+Fargate Service with ALB see Stack aws_543_service_private_ip6_alb  
 
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html  
 checklist:   
@@ -95,12 +99,14 @@ com.amazonaws.region.ecr.api
 both linked to your IPv6 VPC and private Subnets.  
 You need to create also a Gateway Endpoint to  
 com.amazonaws.region.s3  
+for cloudwatch you need also  
+.0/16	com.amazonaws.region.logs  
 
 for interface endpoints, the private subnets must be asociated  
 for the gateway endpoint, the private route tables must be asociated  
 your service security group must be asociated to the VPC endpoints !   
 
-Cloudwatch Logs not working, disable Log Collection 
+
 
 ### status vpc ipv6 only  
 connect to ec2 instances with Sessions Manager not working
@@ -120,8 +126,10 @@ Not yet IPv6 only support
 ### ec2 templates
 status, see vpc findings
 
-#### findings
-output for ec2 ipv6 address not ready 
+### fargate
+no IPv6 support  
+
+
 
 ## terraform
 VPC IPv6 dual stack or IPv6 only  
@@ -131,10 +139,14 @@ http://[]
 or by Route53 AAAA recordset  
 Loadbalancer for EC2 instance  
 can be called by R53 Recordset A Alias  
+RDS with IPv6 working 
   
 ## cdk
-under construction
-first IPv6 Dual Stack VPC created  
+first IPv6 Dual Stack VPC created     
+DualStack IPv6 VPC with 2 public and 2 private Subnets  
+No NAT  
+IGW and EgressOnly IGW and routes  
+no furthter EC2, RDS or Fargate examples yet, since funcionality will work the same way as for CFN and terraform examples   
 
 ## references  
 https://docs.aws.amazon.com/vpc/latest/userguide/aws-ipv6-support.html    

@@ -3,12 +3,10 @@ Description: Fargate ECS Cluster & Roles
 
 
 Parameters:
-
     EnvironmentName:
         Description: An environment name that will be prefixed to resource names
         Type: String
         Default: fargate-example
-
 
 Resources:
   ECSCluster:
