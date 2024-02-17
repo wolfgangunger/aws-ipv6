@@ -1,5 +1,7 @@
 # aws-ipv6
 iac for ipv6 on aws
+examples for cloudformation, cdk and terraform  
+
 ## cloudformation
 ### vpc templates
 vpc stack for dual stack vpc with IPv6 subnets ( 2 public + 2 private)
@@ -140,13 +142,14 @@ or by Route53 AAAA recordset
 Loadbalancer for EC2 instance  
 can be called by R53 Recordset A Alias  
 RDS with IPv6 working 
+no Elastic Beanstalk example, not supported, see CFN  
   
 ## cdk
 first IPv6 Dual Stack VPC created     
 DualStack IPv6 VPC with 2 public and 2 private Subnets  
 No NAT  
 IGW and EgressOnly IGW and routes  
-no furthter EC2, RDS or Fargate examples yet, since funcionality will work the same way as for CFN and terraform examples   
+no further EC2, RDS or Fargate examples yet, since funcionality will work the same way as for CFN and terraform examples   
 
 ## references  
 https://docs.aws.amazon.com/vpc/latest/userguide/aws-ipv6-support.html    
